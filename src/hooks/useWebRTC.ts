@@ -203,7 +203,7 @@ export function useWebRTC(roomId: string, initialVideo: boolean, resolution: str
     userNameRef.current = userName;
 
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.host}`;
+    const wsUrl = import.meta.env.VITE_SIGNALING_URL || `${protocol}//${window.location.host}`;
     const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
 
