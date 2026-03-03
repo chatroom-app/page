@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Moon, Sun } from 'lucide-react';
+import clsx from 'clsx';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -72,16 +73,20 @@ export function SettingsModal({
                 <label className="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-700 rounded-2xl cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
                   <span className="font-medium text-neutral-900 dark:text-white">Mirror local video</span>
                   <div className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" checked={mirrorVideo} onChange={(e) => setMirrorVideo(e.target.checked)} />
-                    <div className="w-11 h-6 bg-neutral-300 peer-focus:outline-none rounded-full peer dark:bg-neutral-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-neutral-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-neutral-600 peer-checked:bg-black dark:peer-checked:bg-white"></div>
+                    <input type="checkbox" className="sr-only" checked={mirrorVideo} onChange={(e) => setMirrorVideo(e.target.checked)} />
+                    <div className={clsx("w-11 h-6 rounded-full transition-colors relative", mirrorVideo ? "bg-black dark:bg-white" : "bg-neutral-300 dark:bg-neutral-700")}>
+                      <div className={clsx("absolute top-[2px] left-[2px] bg-white dark:bg-black w-5 h-5 rounded-full transition-transform", mirrorVideo ? "translate-x-full" : "translate-x-0")} />
+                    </div>
                   </div>
                 </label>
 
                 <label className="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-700 rounded-2xl cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
                   <span className="font-medium text-neutral-900 dark:text-white">Noise suppression</span>
                   <div className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" checked={noiseCancellation} onChange={(e) => setNoiseCancellation(e.target.checked)} />
-                    <div className="w-11 h-6 bg-neutral-300 peer-focus:outline-none rounded-full peer dark:bg-neutral-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-neutral-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-neutral-600 peer-checked:bg-black dark:peer-checked:bg-white"></div>
+                    <input type="checkbox" className="sr-only" checked={noiseCancellation} onChange={(e) => setNoiseCancellation(e.target.checked)} />
+                    <div className={clsx("w-11 h-6 rounded-full transition-colors relative", noiseCancellation ? "bg-black dark:bg-white" : "bg-neutral-300 dark:bg-neutral-700")}>
+                      <div className={clsx("absolute top-[2px] left-[2px] bg-white dark:bg-black w-5 h-5 rounded-full transition-transform", noiseCancellation ? "translate-x-full" : "translate-x-0")} />
+                    </div>
                   </div>
                 </label>
               </div>
@@ -89,15 +94,18 @@ export function SettingsModal({
             
             <div className="space-y-3">
               <label className="text-sm font-semibold text-neutral-600 dark:text-neutral-400 uppercase tracking-wider">Appearance</label>
-              <div className="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-700 rounded-2xl">
-                <span className="font-medium text-neutral-900 dark:text-white">Theme</span>
-                <button 
-                  onClick={toggleTheme} 
-                  className="p-3 bg-white dark:bg-neutral-800 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors shadow-sm text-neutral-900 dark:text-white"
-                >
-                  {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                </button>
-              </div>
+              <label className="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-700 rounded-2xl cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
+                <div className="flex items-center gap-3">
+                  {theme === 'dark' ? <Moon className="w-5 h-5 text-neutral-900 dark:text-white" /> : <Sun className="w-5 h-5 text-neutral-900 dark:text-white" />}
+                  <span className="font-medium text-neutral-900 dark:text-white">Dark Theme</span>
+                </div>
+                <div className="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" className="sr-only" checked={theme === 'dark'} onChange={toggleTheme} />
+                  <div className={clsx("w-11 h-6 rounded-full transition-colors relative", theme === 'dark' ? "bg-black dark:bg-white" : "bg-neutral-300 dark:bg-neutral-700")}>
+                    <div className={clsx("absolute top-[2px] left-[2px] bg-white dark:bg-black w-5 h-5 rounded-full transition-transform", theme === 'dark' ? "translate-x-full" : "translate-x-0")} />
+                  </div>
+                </div>
+              </label>
             </div>
           </div>
         </motion.div>

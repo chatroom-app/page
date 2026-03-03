@@ -271,12 +271,12 @@ export default function Room() {
         
         {/* Video Area (Relative container for centering toolbar) */}
         <div className={clsx(
-          "flex-1 flex flex-col relative transition-all duration-300",
+          "flex-1 flex flex-col relative transition-all duration-300 min-h-0",
           activeTab ? "hidden lg:flex" : "flex"
         )}>
           
           {/* Video Grid */}
-          <div className="flex-1 flex flex-col gap-4">
+          <div className="flex-1 flex flex-col gap-4 min-h-0">
             {pinnedId ? (
               // Pinned View
               <div className="flex-1 flex flex-col gap-4 min-h-0">
@@ -525,9 +525,9 @@ export default function Room() {
                     >
                       <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4 no-scrollbar">
                         {messages.length === 0 ? (
-                          <div className="text-center text-neutral-400 dark:text-neutral-500 mt-10">
+                          <div className="text-center text-neutral-400 dark:text-neutral-500 mt-10 px-4">
                             <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                            <p className="text-sm">Messages are ephemeral and disappear when the call ends.</p>
+                            <p className="text-sm">Messages can only be seen by people in the call and are deleted when the call ends.</p>
                           </div>
                         ) : (
                           messages.map((msg) => (

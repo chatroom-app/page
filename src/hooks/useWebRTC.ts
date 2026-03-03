@@ -235,6 +235,7 @@ export function useWebRTC(roomId: string, initialVideo: boolean, resolution: str
         
         switch (data.type) {
           case 'user-joined': {
+            if (data.peerId === myPeerId.current) break;
             const pc = createPeerConnection(data.peerId, data.name, true);
             const offer = await pc.createOffer();
             await pc.setLocalDescription(offer);
@@ -248,7 +249,19 @@ export function useWebRTC(roomId: string, initialVideo: boolean, resolution: str
             break;
           }
           case 'offer': {
-            const pc = createPeerConnection(data.caller, data.name, false);
+            if (data.caller === myPeerId.current) break;
+            let pc = peersRef.current.get(data.caller)?.pc;
+            if (pc && pc.signalingState !== 'stable') {
+              const isPolite = myPeerId.current < data.caller;
+              if (!isPolite) {
+                break; // Ignore offer to resolve glare
+              }
+              pc.close();
+              pc = createPeerConnection(data.caller, data.name, false);
+            } else if (!pc) {
+              pc = createPeerConnection(data.caller, data.name, false);
+            }
+            
             await pc.setRemoteDescription(new RTCSessionDescription(data.sdp));
             const answer = await pc.createAnswer();
             await pc.setLocalDescription(answer);
@@ -261,16 +274,22 @@ export function useWebRTC(roomId: string, initialVideo: boolean, resolution: str
             break;
           }
           case 'answer': {
+            if (data.caller === myPeerId.current) break;
             const peer = peersRef.current.get(data.caller);
-            if (peer) {
+            if (peer && peer.pc.signalingState === 'have-local-offer') {
               await peer.pc.setRemoteDescription(new RTCSessionDescription(data.sdp));
             }
             break;
           }
           case 'ice-candidate': {
+            if (data.caller === myPeerId.current) break;
             const peer = peersRef.current.get(data.caller);
             if (peer) {
-              await peer.pc.addIceCandidate(new RTCIceCandidate(data.candidate));
+              try {
+                await peer.pc.addIceCandidate(new RTCIceCandidate(data.candidate));
+              } catch (e) {
+                console.warn('Failed to add ICE candidate', e);
+              }
             }
             break;
           }

@@ -93,10 +93,13 @@ export default function Home() {
           transition={{ duration: 0.5 }}
           className="w-full space-y-12"
         >
-          <div className="space-y-4 text-center">
+          <div className="space-y-6 text-center">
             <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-neutral-900 dark:text-white">
-              Start a conversation.
+              Video calls and meetings for everyone.
             </h1>
+            <p className="text-lg md:text-xl text-neutral-500 dark:text-neutral-400 max-w-2xl mx-auto font-medium">
+              Connect, collaborate, and celebrate from anywhere with secure, peer-to-peer video and voice calls.
+            </p>
           </div>
 
           <div className="bg-neutral-50 dark:bg-neutral-900 p-8 rounded-3xl border border-neutral-200 dark:border-neutral-800 shadow-sm max-w-2xl mx-auto w-full">
